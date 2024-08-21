@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/header.ejs') %>
+</head>
+    <%- include('partials/navbar.ejs') %>
+<body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <%- include('partials/searchbar.ejs', { categories: categories, brands: brands, user: user }) %>
+    <!-- Table container -->
+    <div class="container-fluid mt-4">
+        <!-- Container title -->
+        <div class="row mb-3 ">
+            <div class="col-12  product-banner rounded">
+                <h3>Available Products</h3>
+                <button class="btn btn-primary mt-3 mb-3" id="addProductButton">Add Product</button>
+            </div>
+        </div>
+        <%- include('partials/producttable.ejs') %>
+    </div>
+    <!-- End table container -->
+    <!--adding product Modal-->
+    <%- include('partials/productmodal.ejs') %>    
+
+    <!-- Inject the user object into the script -->
+    <script>
+        window.user = <%- JSON.stringify(user) %>;
+    </script>
+
+    <script src="../javascripts/productActions.js"></script>
+    <script src="../javascripts/search.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            fetch('http://localhost:3000/products', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    populateTable(data.data.products, window.user.role);
+                }
+            })
+            .catch(error => console.error('Error fetching products:', error));
+
+            // Add product
+            $('#addProductButton').click(function() {
+                $('#productModalLabel').text('Add Product');
+                $('#productForm')[0].reset();
+                $('#productId').val('');
+                $('#productModal').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>

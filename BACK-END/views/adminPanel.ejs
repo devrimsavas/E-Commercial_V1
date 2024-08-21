@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/header.ejs') %>
+</head>
+<%- include('partials/navbar.ejs') %>
+<body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <%- include('partials/searchbar.ejs', { categories: categories, brands: brands, user: user }) %>
+    <!-- Table container -->
+    <div class="container-fluid mt-4">
+        <!-- Container title -->
+        <div class="row mb-3">
+            <div class="col-12 bg-info">
+                <h3>Available Products</h3>
+                <button class="btn btn-primary mt-3 mb-3" id="addProductButton">Add Product</button>
+            </div>
+        </div>
+        <%- include('partials/producttable.ejs') %>
+    </div>
+    <!-- End table container -->
+
+    <!-- Edit/Add Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+                        <div class="form-group">
+                            <label for="productName">Name</label>
+                            <input type="text" class="form-control" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea class="form-control" id="productDescription" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="productQuantity">Quantity</label>
+                            <input type="number" class="form-control" id="productQuantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPrice">Price</label>
+                            <input type="number" step="0.01" class="form-control" id="productPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productImageUrl">Image URL</label>
+                            <input type="url" class="form-control" id="productImageUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productBrand">Brand</label>
+                            <input type="text" class="form-control" id="productBrand" name="productBrand" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategory">Category</label>
+                            <input type="text" class="form-control" id="productCategory" name="productCategory" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDiscount">Discount</label>
+                            <input type="number"  class="form-control" id="productDiscount" name="productDiscount" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productStatus">Status</label>
+                            <select class="form-control" id="productStatus" required>
+                                <option value="available">Available</option>
+                                <option value="out-of-stock">Out of Stock</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inject the user object into the script -->
+    <script>
+        window.user = <%- JSON.stringify(user) %>;
+    </script>
+
+    <script src="../javascripts/productActions.js"></script>
+    <script src="../javascripts/search.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            fetch('/products')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    populateTable(data.data.products, window.user.role);
+                }
+            })
+            .catch(error => console.error('Error fetching products:', error));
+
+            // Add product
+            $('#addProductButton').click(function() {
+                $('#productModalLabel').text('Add Product');
+                $('#productForm')[0].reset();
+                $('#productId').val('');
+                $('#productModal').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>

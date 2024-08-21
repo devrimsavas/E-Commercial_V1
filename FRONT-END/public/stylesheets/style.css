@@ -1,0 +1,34 @@
+body {
+  padding: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: rgb(224, 206, 206) !important;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+
+.log-cards {
+  width:400px;
+  height:500px;
+
+}
+
+.card-inner {
+  height:200px;
+}
+
+
+
+.navbar  {
+  background-color:rgb(194, 216, 140) !important;
+  
+}
+
+.product-banner {
+  background-color:#7fa08c !important;
+  color:rgb(0, 0, 0) !important;
+}
+

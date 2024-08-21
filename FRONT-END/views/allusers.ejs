@@ -1,0 +1,125 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users</title>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="container-fluid mt-4">
+        <h1>All Users</h1>
+        <p>Manage All Users</p>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" id="add-user" onclick="window.location.href='http://localhost:3000/auth/signup'">Add New User</button>
+        </div>
+
+        <!-- Users table container -->
+        <div class="container-flex mt-4 justify-content-center">
+            <!-- Container title -->
+            <div class="row mb-3">
+                <div class="col-12 bg-warning">
+                    <h3>Available Users</h3>
+                </div>
+            </div>
+            <div class="responsive-table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Telephone</th>
+                            <th>Role</th>
+                            <th>Membership</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user.id %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.firstname %></td>
+                                <td><%= user.lastname %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.address %></td>
+                                <td><%= user.telephonenumber %></td>
+                                <td><%= user.role %></td>
+                                <td><%= user.MembershipStatus ? user.MembershipStatus.name : 'N/A' %></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-button" data-id="<%= user.id %>" data-bs-toggle="modal" data-bs-target="#editUserModal">Edit</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+
+                        <input type="hidden" id="editUserId" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="editUserUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="editUserUsername" name="username" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editUserFirstname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="editUserFirstname" name="firstname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserLastname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="editUserLastname" name="lastname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editUserEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserTelephonenumber" class="form-label">Telephone</label>
+                            <input type="text" class="form-control" id="editUserTelephonenumber" name="telephonenumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserAddress" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="editUserAddress" name="address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserRole" class="form-label">Role</label>
+                            <select class="form-select" id="editUserRole" name="role" required>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveUserChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the user actions script -->
+    <script src="/javascripts/userActions.js"></script>
+</body>
+</html>
+

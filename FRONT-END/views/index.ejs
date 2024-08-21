@@ -1,0 +1,119 @@
+
+<!--front-end index-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <%- include('partials/header.ejs') %> 
+</head>
+<body>
+  <%- include('partials/navbar.ejs') %>
+
+  <div class="container mt-5">
+    <h1 class="display-4 text-center"><%= title %></h1>
+    <p class="lead text-center">Welcome to <%= title %> of Noroff E-Commercial Admin Panel Front-Page View.</p>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card shadow ">
+          
+          <div class="container-fluid card-body text-center log-cards" >
+            
+            <i class="bi bi-person-workspace" style="font-size: 5rem;color:yellow; "></i>
+            <h5 class="card-title">Guest</h5><hr>
+            <div class="card-inner">
+              <p class="card-text">Browse our products without the need to log in. Enjoy your shopping!</p>
+              <p> Guest view is available at <a href="/guest">http://localhost:3000/guest</a></p>
+            </div> <hr>
+            <a href="http://localhost:3000/guest" class="btn btn-primary">View Products</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow ">
+          <div class="container-fluid card-body text-center log-cards">
+            <i class="bi bi-person-circle" style="font-size: 5rem; color:green;"></i>
+            <h5 class="card-title">User</h5><hr>
+            <div class="card-inner">
+              <p class="card-text">Access your cart and personal discounts by logging in or signing up!</p>
+              <p> User view is available at <a href="http://localhost:3000/registeredUsers">http://localhost:3000/registeredUsers</a></p>
+              <p> Please <a href="http://localhost:3000/auth/login">login </a> or <a href="http://localhost:3000/auth/signup">sign up</a> to access user view if you have not done yet</p>
+            </div><hr>
+            <a href="http://localhost:3000/registeredUsers" class="btn btn-success" id="userViewButton">User View</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card shadow">
+          <div class="container-fluid card-body text-center log-cards">
+            <i class="bi bi-person-fill-gear" style="font-size: 5rem;color:red;"></i>
+            <h5 class="card-title">Admin</h5><hr>
+            <div class="card-inner">
+              <p class="card-text">Manage products, categories, brands, and orders. You need to be an admin to access this page.</p>
+              <p><a href="/admin/login">Admin Login </a> </p>
+            </div><hr>
+              <a href="/admin" class="btn btn-danger" id="adminViewButton">Admin Dashboard</a>
+            
+            
+          </div>
+        </div>
+      </div>
+
+
+  </div>
+
+  <script>
+    
+$(document).ready(function() {
+    $('#userViewButton, #adminViewButton').click(function(event) {
+        event.preventDefault();  // Stop the link from causing a direct page load
+        var targetUrl = $(this).attr('href');  // Extract the URL to navigate to
+
+        $.ajax({
+            url: targetUrl,
+            method: 'GET',
+            dataType: 'json',  // Expect JSON responses
+            statusCode: {
+                200: function(data) {
+                    // Server responded with OK, proceed to the URL
+                    window.location.href = targetUrl;
+                },
+                401: function(response) {
+                    // Unauthorized access
+                    alert(response.responseJSON.message);
+                },
+                403: function(response) {
+                    // Forbidden access
+                    alert(response.responseJSON.message);
+                }
+            },
+            error: function(xhr) {
+                // Handle non-authorization related errors
+                alert('Error: ' + xhr.status + ' - ' + xhr.statusText);
+            }
+        });
+    });
+});
+</script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+</body>
+</html>
+
+

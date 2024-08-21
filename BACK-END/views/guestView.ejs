@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="container mt-5 ">
+        <h1>Welcome to the Guest View</h1>
+        <p>
+            This is a limited view accessible to everyone. You can browse products and categories but need to 
+            <a href="/auth/signup">sign up</a> or 
+            <a href="/auth/login">log in</a> to make purchases.
+        </p>
+    </div><hr>
+    <%- include('partials/searchbar.ejs', { categories: categories, brands: brands, user: { role: 'guest' } }) %>
+    <hr>
+    
+    <!--table container-->
+    <div class="container-fluid mt-4">
+        <!--container title-->
+        <div class="row mb-3">
+            <div class="col-12 bg-warning">
+                <h3> Available Products</h3>
+            </div>
+        </div>
+        <%- include('partials/producttable.ejs') %>
+    </div>
+    <!--end table container-->
+
+    <script>
+        window.user = <%- JSON.stringify(user) %>;
+    </script>
+
+    <!--search script -->
+    <script src="../javascripts/search.js"></script>
+
+    <script>
+        //populate table with products guest view only 
+        $(document).ready(function() {
+            // Fetch products and populate the table
+            fetch('/products')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const products = data.data.products;
+                        let rows = '';
+
+                        products.forEach(product => {
+                            rows += `
+                                <tr>
+                                    <td>${product.id}</td>
+                                    <td>${product.name}</td>
+                                    <td>${product.description}</td>
+                                    <td>${product.quantity}</td>
+                                    <td>${product.price}</td>
+                                    <td>${product.discount}</td>
+                                    <td>${product.brand}</td>
+                                    <td>${product.category}</td>
+                                    <td>${product.imgurl}</td>
+                                    <td><img src="${product.imgurl}" alt="${product.name}" style="width: 50px;"></td>
+                                    <td>${product.isdeleted ? 'Yes' : 'No'}</td>
+                                    <td>${new Date(product.date_added).toLocaleDateString()}</td>
+                                    <td>
+                                        <!-- Options will be populated based on user role -->
+                                    </td>
+                                </tr>
+                            `;
+                        });
+
+                        $('table tbody').html(rows);
+                    }
+                })
+                .catch(error => console.error('Error fetching products:', error));
+        });
+    </script>
+
+<script src="../javascripts/productActions.js"></script>
+<script src="../javascripts/search.js"></script>
+
+
+</body>
+</html>

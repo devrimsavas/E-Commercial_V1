@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="login-form"> <!-- Use an ID to reference the form -->
+                            <div class="mb-3">
+                                <label for="identifier" class="form-label">Username or Email</label>
+                                <input type="text" class="form-control" id="identifier" name="identifier" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="login-button" name="login-button">Login</button>
+                        </form>
+                        <div class="mt-3 text-center">
+                            <a href="/auth/signup">Don't have an user account? Sign Up </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Client script for login
+        $(document).ready(function() {
+            $('#login-form').on('submit', async function(event) {
+                event.preventDefault();
+                const identifier = $('#identifier').val();
+                const password = $('#password').val();
+
+                if (!identifier || !password) {
+                    alert('All fields are required');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/auth/login', {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ identifier, password })
+                    });
+
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        window.location.href = data.data.redirectUrl;
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    alert('An error occurred during login. Please try again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

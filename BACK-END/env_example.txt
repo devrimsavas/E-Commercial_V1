@@ -1,0 +1,20 @@
+ADMIN_USERNAME = 
+ADMIN_PASSWORD = 
+DATABASE_NAME = 
+DIALECT = 
+DIALECTMODEL = 
+PORT = "3000"
+HOST = "localhost"
+
+
+
+TOKEN_SECRET=
+
+# New admin credentials environment variables
+INIT_ADMIN_USERNAME = 
+INIT_ADMIN_PASSWORD = 
+INIT_ADMIN_EMAIL = "admin@noroff.no"
+INIT_ADMIN_FIRSTNAME = "Admin"
+INIT_ADMIN_LASTNAME = "Support"
+INIT_ADMIN_ADDRESS = "Online"
+INIT_ADMIN_TELEPHONE = "911"

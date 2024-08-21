@@ -1,0 +1,6 @@
+
+** please use same token that you have in back-end part of this application. 
+
+PORT = "5000"
+HOST = "localhost"
+TOKEN_SECRET=<same_token_you_have_at_back_end>

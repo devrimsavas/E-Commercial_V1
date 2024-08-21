@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/header.ejs') %>
+</head>
+<%-include('partials/navbar.ejs')%>
+<body>
+    <div class="container mt-5 ">
+    
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %></p>
+    
+    <%-include('partials/searchbar.ejs', { categories: categories, brands: brands, user: { role: 'user' } }) %>
+
+    <!--table container-->
+    <div class="container-fluid mt-4">
+        <!--container title-->
+        <div class="row mb-3">
+            <div class="col-12 bg-warning">
+                <h3> Available Products</h3>
+            </div>
+        </div>
+        <%- include('partials/producttable.ejs') %>
+    </div>
+    <!--end table container-->
+    
+
+    <script>
+        window.user = <%- JSON.stringify(user) %>;
+    </script>
+</body>
+
+<script src="../javascripts/search.js"></script>
+<script src="../javascripts/productActions.js"></script>
+
+<script>
+    //populate table with products with user options based on user role
+
+    $(document).ready(function() {
+        fetch('/products')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const products = data.data.products;
+                    let rows = '';
+
+                    products.forEach(product => {
+                        const isDisabled = product.isdeleted || product.quantity === 0 ? 'disabled' : '';
+                        rows += `
+                            <tr>
+                                <td>${product.id}</td>
+                                <td>${product.name}</td>
+                                <td>${product.description}</td>
+                                <td>${product.quantity}</td>
+                                <td>${product.price}</td>
+                                <td>${product.discount}</td>
+                                <td>${product.brand}</td>
+                                <td>${product.category}</td>
+                                <td>${product.imgurl}</td>
+                                <td><img src="${product.imgurl}" alt="${product.name}" style="width: 50px;"></td>
+                                <td>${product.isdeleted ? 'Yes' : 'No'}</td>
+                                <td>${new Date(product.date_added).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm add-to-cart" data-id="${product.id}" ${isDisabled}>Add to Cart <i class="bi bi-cart4"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    $('table tbody').html(rows);
+                }
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    });
+</script>
+</html>

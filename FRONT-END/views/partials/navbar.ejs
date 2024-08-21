@@ -1,0 +1,79 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark  " id="navbar">
+    <img src="/images/noroff.png" width="50" height="50" class="d-inline-block align-top me-3 ms-3" alt="">
+    <a class="navbar-brand" href="/">Noroff  e-commerce</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/"><i class="bi bi-house-door"></i>Home</a>
+            </li>
+            <% if (user && user.role === 'admin') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin Panel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin"> <i class="bi bi-gear"></i>Products </i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/brands"><i class="bi bi-gear"></i>Brands </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/categories"> <i class="bi bi-gear"></i>Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/allusers"><i class="bi bi-people-fill"></i>Users and Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/orders"><i class="bi bi-box-seam-fill"></i>Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/settings"></a>
+                </li>
+            <% } else if (user && user.role === 'user') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registeredUsers"><i class="bi bi-person-fill"></i> User Panel</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/guest">Guest View</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/guest/guestbrand">Brands </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/guest/guestcategory">Categories</a>
+                </li>
+            <% } %>
+        </ul>
+        <ul class="navbar-nav">
+            <% if (user && user.role === 'user') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart"><i class="bi bi-cart4"></i></a>
+                </li>
+            <% } %>
+            <% if (user && user.role !== 'guest') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/logout">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Welcome, <%= user.username %></span>
+                </li>
+
+                
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/signup">Sign Up</a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>

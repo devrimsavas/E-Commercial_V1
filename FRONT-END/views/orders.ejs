@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="container-fluid mt-4">
+        <h1>Orders</h1>
+        <p>Manage Orders</p>
+
+        <!-- Orders table container -->
+        <div class="container-flex mt-4 justify-content-center">
+            <!-- Container title -->
+            <div class="row mb-3">
+                <div class="col-12 bg-warning">
+                    <h3>Available Orders</h3>
+                </div>
+            </div>
+            <div class="responsive-table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Order Number</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Order Status</th>
+                            <th>Items</th>
+                            <th>Prices</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                <td><%= order.id %></td>
+                                <td><%= order.orderNumber %></td>
+                                <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                                <td><%= new Date(order.updatedAt).toLocaleDateString() %></td>
+                                <td><%= order.User.id %></td>
+                                <td><%= order.User.username %></td>
+                                <td>
+                                    <select class="form-select order-status" data-id="<%= order.id %>">
+                                        <option value="ordered" <%= order.status === 'ordered' ? 'selected' : '' %>>Ordered</option>
+                                        <option value="in process" <%= order.status === 'in process' ? 'selected' : '' %>>In Process</option>
+                                        <option value="completed" <%= order.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% order.OrderItems.forEach(item => { %>
+                                            <li>Product ID: <%= item.ProductId %>, Quantity: <%= item.quantity %>, Unit Price: $<%= item.unit_price %></li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Original Price: $<%= order.totalPrice ? order.totalPrice.toFixed(2) : 'N/A' %><br>
+                                    Discount: $<%= order.discountAmount ? order.discountAmount.toFixed(2) : 'N/A' %> (<%= order.discountPercentage ? order.discountPercentage : '0' %>%)<br>
+                                    Final Price: $<%= order.finalPrice ? order.finalPrice.toFixed(2) : 'N/A' %>
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-order" data-id="<%= order.id %>">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-order" data-id="<%= order.id %>">Delete</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the order actions script -->
+    <script src="/javascripts/orderActions.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/header.ejs') %>
+</head>
+<%-include('partials/navbar.ejs')%>
+<body>
+    <div class="container mt-5 ">
+    
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %></p>
+
+        <div class="container-fluid mt-4">
+            <!--container title-->
+            <div class="row mb-3">
+                <div class="col-12 bg-warning">
+                    <h3>Cart</h3>
+                </div>
+            </div>
+            <div class="responsive-table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>price</th>
+                            <th>quantity</th>
+                            <th>total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% cart.forEach(product => { %>
+                            <tr>
+                                <td><%= product.id %></td>
+                                <td><%= product.name %></td>
+                                <td><%= product.price %></td>
+                                <td><%= product.quantity %></td>
+                                <td><%= product.price * product.quantity %></td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm delete-button" data-id="<%= product.id %>">Remove</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    
+
+    
+    
+
+    <script>
+        window.user = <%- JSON.stringify(user) %>;
+    </script>
+</body>
+
+<script src="../javascripts/search.js"></script>
+<script src="../javascripts/productActions.js"></script>
+
+
+</html>

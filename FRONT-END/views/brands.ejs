@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brands</title>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="container-fluid mt-4">
+        <h1>Brands </h1>
+
+        <%if (user.role==='admin') { %>
+        <p>Manage Brands </p>
+
+
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" id="add-brand">Add New Brand</button>
+        </div>
+
+        <% } %>
+
+        <!--brands table container-->
+        <div class="container-flex mt-4 justify-content-center">
+            <!--container title-->
+            <div class="row mb-3">
+                <div class="col-12 bg-warning">
+                    <h3> Available Brands</h3>
+                </div>
+            </div>
+            <div class="responsive-table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th> id </th>
+                            <th> name </th>
+                            <th> Options </th>
+                    </thead>
+                    <tbody>
+                        <% brands.forEach(brand => { %>
+                            <tr>
+                                <td><%= brand.id %></td>
+                                <td><%= brand.name %></td>
+                                <td>
+                                    <%if (user.role==='admin') { %>
+
+                                    <button class="btn btn-warning btn-sm edit-button" data-id="<%= brand.id %>"><i class="bi bi-pencil"></i> Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-button" data-id="<%= brand.id %>"><i class="bi bi-eraser-fill"></i>Delete</button>
+
+                                    <% } else {%>
+                                        <span> This is an admin only feature</span>
+                                    <% }
+                                    
+                                    
+                                    
+                                    %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        
+        
+    </div>
+
+    <!--Modal for Brand Input and Confirmation-->
+    <%- include('partials/brandsmodal.ejs') %>
+
+
+
+
+
+
+    <script src="/javascripts/brandActions.js"></script>
+</body>
+</html>

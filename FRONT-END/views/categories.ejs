@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categories</title>
+    <%- include('partials/header.ejs') %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="container-fluid mt-5">
+        <h1>Categories</h1><hr>
+        <p>Manage Categories you logged as <%= user.role %></p>
+
+        <%if (user.role==='admin') { %>
+        
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" id="add-category">Add New Category</button>
+        </div>
+
+        <% } %>
+
+        <!--categories table container-->
+        <div class="container-flex mt-4 justify-content-center">
+            <!--container title-->
+            <div class="row mb-3">
+                <div class="col-12 bg-warning">
+                    <h3>Available Categories</h3>
+                </div>
+            </div>
+            <div class="responsive-table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% categories.forEach(category => { %>
+                            <tr>
+                                <td><%= category.id %></td>
+                                <td><%= category.name %></td>
+                                <td>
+                                    <%if (user.role==='admin') { %>
+
+                                        <button class="btn btn-warning btn-sm edit-button" data-id="<%= category.id %>"><i class="bi bi-pencil-fill"></i> Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-button" data-id="<%= category.id %>"> <i class="bi bi-eraser-fill"></i> Delete</button>
+
+                                    <% } else {%>
+                                        <span> This is an admin only feature</span>
+                                    <% }
+                                    
+                                    
+                                    
+                                    %>
+                                        
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!--Toast for adding categories-->
+    <%- include('partials/categoriesmodal.ejs') %>
+
+
+
+    
+      
+
+
+    <!-- Include the category actions script -->
+    <script src="/javascripts/categoryActions.js"></script>
+</body>
+</html>
