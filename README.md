@@ -1,5 +1,5 @@
 
-# NOROFF E-Commercial App 
+# SNAPSHOP E-Commercial App 
 
 **Very important note please read**: 
 To ensure the proper functioning of the Admin Panel in the FRONT-END section, it is crucial to configure the token secrets consistently across both folders. This configuration is essential for the smooth operation of the front-end admin panel.
